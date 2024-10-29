@@ -12,10 +12,10 @@ on:
 
 jobs:
   API:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       # Core variables:
-      FC: gfortran-12
+      FC: gfortran-14
       FCFLAGS: "-ffree-line-length-none -m64 -std=f2008 -march=native -fbounds-check -fmodule-private -fimplicit-none -finit-real=nan -g -DRTE_USE_CBOOL"
       RRTMGP_ROOT: ${{ github.workspace }}
       RTE_KERNELS: extern
