@@ -42,7 +42,7 @@ variables:
     FC: ftn
     # Convenience variables:
     VERSION_FCFLAGS: -V
-    COMPILER_MODULES: PrgEnv-cray cce/16.0.1 craype-x86-milan
+    COMPILER_MODULES: PrgEnv-cray cce/17.0.1 craype-x86-milan
 
 #
 # Set up Python virtual environment
