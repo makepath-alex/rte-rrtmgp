@@ -403,11 +403,12 @@ contains
     !$acc data copyout (array) present(this, this%concs)
     !$omp target data map(from:array)
     if(size(this%concs(igas)%conc, 1) > 1) then      ! Concentration stored as 2D
-      !$acc parallel loop collapse(2) default(none) present(p)
+      !!$acc parallel loop collapse(2) default(none) present(p)
+      !$acc parallel loop collapse(2) default(present)
       !$omp target teams distribute parallel do simd
       do ilay = 1, size(array,2)
         do icol = 1, size(array,1)
-#ifdef _CRAYFTN
+#ifdef _CCRAYFTN
            array(icol,ilay) = p(icol,ilay)
 #else
           array(icol,ilay) = this%concs(igas)%conc(icol,ilay)

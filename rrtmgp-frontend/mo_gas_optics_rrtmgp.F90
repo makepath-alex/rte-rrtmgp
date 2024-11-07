@@ -2006,10 +2006,11 @@ contains
   subroutine combine_abs_and_rayleigh(tau, tau_rayleigh, optical_props)
     real(wp), dimension(:,:,:),   intent(in   ) :: tau
     real(wp), dimension(:,:,:),   intent(in   ) :: tau_rayleigh
-    class(ty_optical_props_arry), intent(inout) :: optical_props
+    class(ty_optical_props_arry), target, intent(inout) :: optical_props
 
     integer :: icol, ilay, igpt, ncol, nlay, ngpt, nmom
     real(wp) :: t
+    real(wp), pointer :: tau_wtf(:,:,:), ssa_wtf(:,:,:)
 
     ncol = size(tau, 1)
     nlay = size(tau, 2)
@@ -2033,6 +2034,8 @@ contains
     ! asymmetry factor or phase function moments
     !
     type is (ty_optical_props_2str)
+      ssa_wtf => optical_props%ssa
+      tau_wtf => optical_props%tau
       !
       ! Extinction optical depth and single scattering albedo
       !
@@ -2043,11 +2046,14 @@ contains
           do icol = 1, ncol
             t = tau(icol,ilay,igpt) + tau_rayleigh(icol,ilay,igpt)
             if(t > 2._wp * tiny(t)) then
-               optical_props%ssa(icol,ilay,igpt) = tau_rayleigh(icol,ilay,igpt) / t
+               !optical_props%ssa(icol,ilay,igpt) = tau_rayleigh(icol,ilay,igpt) / t
+               ssa_wtf(icol,ilay,igpt) = tau_rayleigh(icol,ilay,igpt) / t
              else
-               optical_props%ssa(icol,ilay,igpt) = 0._wp
+               ! optical_props%ssa(icol,ilay,igpt) = 0._wp
+               ssa_wtf(icol,ilay,igpt) = 0._wp
              end if
-             optical_props%tau(icol,ilay,igpt) = t
+             ! optical_props%tau(icol,ilay,igpt) = t
+             tau_wtf(icol,ilay,igpt) = t
            end do
         end do
       end do
