@@ -81,22 +81,6 @@ extern "C"
         Float* tau // [inout] (ncol,nlay.ngpt)
     );
 
-    void rrtmgp_compute_tau_rayleigh(
-        const int& ncol, const int& nlay, const int& nband, const int& ngpt,
-        const int& ngas, const int& nflav, const int& neta, const int& npres, const int& ntemp,
-        const int* gpoint_flavor, // (2,ngpt)
-        const int* band_lims_gpt,  // (2,nbnd)
-        const Float* krayl,  // (ntemp,neta,ngpt,2)
-        const int& idx_h2o,
-        const Float* col_dry, // (ncol,nlay)
-        const Float* col_gas, // (ncol,nlay,ngas+1)
-        const Float* fminor, // (2,2,ncol,nlay,nflav)
-        const int* jeta, // (2,  ncol,nlay,nflav)
-        const Bool* tropo, // (ncol,nlay)
-        const int* jtemp, // (ncol,nlay)
-        Float* tau_rayleigh  // [inout] (ncol,nlay.ngpt)
-    );
-
     void rrtmgp_compute_Planck_source(
         const int& ncol, const int& nlay, const int& nbnd, const int& ngpt,
         const int& nflav, const int& neta, const int& npres, const int& ntemp,
@@ -124,7 +108,7 @@ extern "C"
     
     /* Cloud optics kernels */ 
     void rrtmgp_compute_tau_rayleigh(
-        const int& ncol, const int& nlay, const int& nband, const int& ngpt,
+        const int& ncol, const int& nlay, const int& nbnd, const int& ngpt,
         const int& ngas, const int& nflav, const int& neta, const int& npres, const int& ntemp,
         const int* gpoint_flavor, // (2,ngpt)
         const int* band_lims_gpt,  // (2,nbnd)
