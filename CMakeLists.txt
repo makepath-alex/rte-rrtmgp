@@ -56,19 +56,21 @@ set(CMAKE_Fortran_FLAGS "" CACHE STRING "Select Fortran compile flags")
 
 set(PREFERRED_FC_COMPILERS "gfortran" "gfortran-10" "gfortran-11" "gfortran-12" "gfortran-13" "ifort" "ifx" "nvfortran" "f77")
 
-if(NOT WINDOWS)
-    set(CMAKE_Fortran_COMPILER "gfortran" CACHE STRING "Select the Fortran compiler: ${PREFERRED_FC_COMPILERS}")
-    set_property(CACHE CMAKE_Fortran_COMPILER PROPERTY STRINGS ${PREFERRED_FC_COMPILERS})
-else()
-    message(STATUS "Conda Environment: $ENV{CONDA_PREFIX}")
-    set(CMAKE_Fortran_COMPILER "$ENV{CONDA_PREFIX}/Library/bin/gfortran.exe" CACHE STRING "Select the Fortran compiler")
-    set(CMAKE_AR "$ENV{CONDA_PREFIX}/Library/x86_64-w64-mingw32/bin/ar.exe" CACHE STRING "Select archiver")
-    set(CMAKE_RANLIB "$ENV{CONDA_PREFIX}/Library/x86_64-w64-mingw32/bin/ranlib.exe" CACHE STRING "Select ranlib executable")
+message(STATUS "Conda Environment: $ENV{CONDA_PREFIX}")
 
-    file(TO_CMAKE_PATH ${CMAKE_AR} CMAKE_AR)
-    file(TO_CMAKE_PATH ${CMAKE_RANLIB} CMAKE_RANLIB)
-    file(TO_CMAKE_PATH ${CMAKE_Fortran_COMPILER} CMAKE_Fortran_COMPILER)
-endif()
+# if(NOT WINDOWS)
+set(CMAKE_Fortran_COMPILER "gfortran" CACHE STRING "Select the Fortran compiler: ${PREFERRED_FC_COMPILERS}")
+set_property(CACHE CMAKE_Fortran_COMPILER PROPERTY STRINGS ${PREFERRED_FC_COMPILERS})
+# else()
+#     message(STATUS "Conda Environment: $ENV{CONDA_PREFIX}")
+#     set(CMAKE_Fortran_COMPILER "$ENV{CONDA_PREFIX}/Library/bin/gfortran.exe" CACHE STRING "Select the Fortran compiler")
+#     # set(CMAKE_AR "$ENV{CONDA_PREFIX}/Library/x86_64-w64-mingw32/bin/ar.exe" CACHE STRING "Select archiver")
+#     # set(CMAKE_RANLIB "$ENV{CONDA_PREFIX}/Library/x86_64-w64-mingw32/bin/ranlib.exe" CACHE STRING "Select ranlib executable")
+
+#     # file(TO_CMAKE_PATH ${CMAKE_AR} CMAKE_AR)
+#     # file(TO_CMAKE_PATH ${CMAKE_RANLIB} CMAKE_RANLIB)
+#     file(TO_CMAKE_PATH ${CMAKE_Fortran_COMPILER} CMAKE_Fortran_COMPILER)
+# endif()
 
 # Check if the Fortran compiler is available
 find_program(FORTRAN_COMPILER_FOUND ${CMAKE_Fortran_COMPILER})
