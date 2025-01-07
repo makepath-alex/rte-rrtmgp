@@ -2,6 +2,8 @@
 :: Stop on any error
 setlocal ENABLEEXTENSIONS
 
+set BUILD_DIR=build
+
 set BUILD_TYPE=Debug
 set RRTMGP_DATA_VERSION=v1.8.2
 set FP_MODEL=DP
@@ -12,12 +14,16 @@ set FAILURE_THRESHOLD=7.e-4
 
 set FCFLAGS="-ffree-line-length-none -m64 -std=f2008 -march=native -fbounds-check -fmodule-private -fimplicit-none -finit-real=nan -fbacktrace"
 
+set "HOST=x86_64-w64-mingw32"
+set "FC=%HOST%-gfortran.exe"
+
 :: CMake configuration
 mkdir build
-cd build
 
-:: Note: %CMAKE_ARGS% is automatically provided by conda-forge.
-cmake %CMAKE_ARGS% ^
+:: Note: $CMAKE_ARGS is automatically provided by conda-forge. 
+:: It sets default paths and platform-independent CMake arguments.
+cmake -S . -B %BUILD_DIR% ^
+      %CMAKE_ARGS% ^
       -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
       -DCMAKE_Fortran_COMPILER=%FC% ^
       -DCMAKE_Fortran_FLAGS=%FCFLAGS% ^
@@ -27,14 +33,13 @@ cmake %CMAKE_ARGS% ^
       -DKERNEL_MODE=%RTE_KERNELS% ^
       -DENABLE_TESTS=%ENABLE_TESTS% ^
       -DFAILURE_THRESHOLD=%FAILURE_THRESHOLD% ^
-      -G Ninja ..
+      -G Ninja
 
 :: Compile
-cmake --build . -- /maxcpucount:%NUMBER_OF_PROCESSORS%
+cmake --build %BUILD_DIR% -- --parallel
+
+:: Install the necessery files into the package
+cmake --install %BUILD_DIR% --prefix %PREFIX%
 
 :: Run tests
-ctest --output-on-failure --test-dir . -V
-
-:: Manually copy libraries, binaries, and Fortran module files to %PREFIX%
-xcopy /s /y build\*.lib %PREFIX%\lib\
-xcopy /s /y build\*.mod %PREFIX%\include\
+ctest --output-on-failure --test-dir %BUILD_DIR% -V
