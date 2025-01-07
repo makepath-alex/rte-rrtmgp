@@ -117,3 +117,18 @@ if(ENABLE_TESTS)
     add_subdirectory(examples) # Build: Test & Check
     add_subdirectory(tests)    # Build: Test & Check
 endif()
+
+install(FILES
+    ${CMAKE_SOURCE_DIR}/rrtmgp-kernels/api/rrtmgp_kernels.h
+    ${CMAKE_SOURCE_DIR}/rte-kernels/api/rte_kernels.h
+    ${CMAKE_SOURCE_DIR}/rte-kernels/api/rte_types.h
+    DESTINATION include
+)
+
+install(FILES
+    ${CMAKE_BINARY_DIR}/rrtmgp-frontend/librrtmgp.a
+    ${CMAKE_BINARY_DIR}/rrtmgp-kernels/librrtmgpkernels.a
+    ${CMAKE_BINARY_DIR}/rte-frontend/librte.a
+    ${CMAKE_BINARY_DIR}/rte-kernels/librtekernels.a
+    DESTINATION lib
+)
