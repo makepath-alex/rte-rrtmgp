@@ -38,3 +38,5 @@ target_include_directories(
 )
 
 target_link_libraries(rrtmgpkernels PRIVATE rte)
+
+install(FILES api/rrtmgp_kernels.h TYPE INCLUDE)

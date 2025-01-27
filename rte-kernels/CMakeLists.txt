@@ -44,3 +44,9 @@ target_compile_definitions(
 )
 
 target_include_directories(rtekernels PRIVATE ${CMAKE_Fortran_MODULE_DIRECTORY})
+
+install(FILES
+  api/rte_kernels.h
+  api/rte_types.h
+  TYPE INCLUDE
+)
