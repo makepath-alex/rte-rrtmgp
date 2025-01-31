@@ -873,19 +873,34 @@ contains
     ! Variables for temperature at layer edges [K] (ncol, nlay+1)
     real(wp), dimension(   ncol,nlay+1), target  :: tlev_arr
     real(wp), dimension(:,:),            pointer :: tlev_wk
+
+    integer                             :: d_ncol, d_nlay, d_nbnd, d_ngpt
+    integer                             :: nflav, neta, npres, ntemp, nPlanckTemp
+    real(wp),    dimension(ncol,nlay  ) :: m_tlay
+    real(wp),    dimension(ncol,nlay+1) :: m_tlev
+    real(wp),    dimension(ncol       ) :: m_tsfc
+    integer                             :: m_sfc_lay
+    real(wp),    allocatable, dimension(:,:,:,:,:,:) :: m_fmajor
+    integer,     allocatable, dimension(:,:,:,:)     :: m_jeta
+    logical(wl), dimension(ncol,nlay)   :: m_tropo
+    integer,     dimension(ncol,nlay)   :: m_jtemp, m_jpress
+    integer, dimension(ngpt)            :: m_gpoint_bands
+    integer, dimension(2, nbnd)         :: m_band_lims_gpt
+    real(wp)                            :: m_temp_ref_min, m_totplnk_delta
+    real(wp), allocatable, dimension(:,:,:,:)        :: m_pfracin
+    real(wp), allocatable, dimension(:,:)         :: m_totplnk
+    integer,  dimension(2,ngpt)         :: m_gpoint_flavor
+
+    ! File units
+    integer :: file_units(17)
+    integer :: i
+
+    character(len=*), parameter :: path = "/data/vkm/code/makepath/rte-rrtmgp/tmp/"
+
     ! ----------------------------------------------------------
     error_msg = ""
-    !
-    ! Source function needs temperature at interfaces/levels and at layer centers
-    !   Allocate small local array for tlev unconditionally
-    !
-    !$acc        data copyin(sources) copyout( sources%lay_source, sources%lev_source)     &
-    !$acc                             copyout( sources%sfc_source, sources%sfc_source_Jac) &
-    !$acc              create(tlev_arr)
-    !$omp target data                 map(from:sources%lay_source, sources%lev_source)     &
-    !$omp                             map(from:sources%sfc_source, sources%sfc_source_Jac) &
-    !$omp           map(alloc:tlev_arr)
 
+    ! Select correct temperature array
     if (present(tlev)) then
       !   Users might have provided these
       tlev_wk => tlev
@@ -917,20 +932,69 @@ contains
     end if
 
     !-------------------------------------------------------------------
-    ! Compute internal (Planck) source functions at layers and levels,
-    !  which depend on mapping from spectral space that creates k-distribution.
+    ! Open binary files safely
+    open(newunit=file_units(1),  file=path // "inputs-dim.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(2),  file=path // "inputs-sfc_lay.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(3),  file=path // "inputs-jeta.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(4),  file=path // "inputs-tropo.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(5),  file=path // "inputs-jtemp.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(6),  file=path // "inputs-jpress.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(7),  file=path // "inputs-gpoint_bands.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(8),  file=path // "inputs-band_lims_gpt.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(9),  file=path // "inputs-gpoint_flavor.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(10), file=path // "inputs-tlay.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(11), file=path // "inputs-tlev.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(12), file=path // "inputs-tsfc.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(13), file=path // "inputs-fmajor.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(14), file=path // "inputs-pfracin.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(15), file=path // "inputs-temp_ref_min.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(16), file=path // "inputs-totplnk_delta.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_units(17), file=path // "inputs-totplnk.bin", form="unformatted", access="stream", action="readwrite")
+    
+    read(file_units(1)) d_ncol, d_nlay, d_nbnd, d_ngpt, nflav, neta, npres, ntemp, nPlanckTemp
 
-    call compute_Planck_source(ncol, nlay, nbnd, ngpt, &
-                get_nflav(this), this%get_neta(), this%get_npres(), this%get_ntemp(), this%get_nPlanckTemp(), &
-                tlay, tlev_wk, tsfc, merge(nlay, 1, logical(top_at_1, wl)), &
-                fmajor, jeta, tropo, jtemp, jpress,                         &
-                this%get_gpoint_bands(), this%get_band_lims_gpoint(), this%planck_frac, this%temp_ref_min,&
-                this%totplnk_delta, this%totplnk, this%gpoint_flavor,       &
-                sources%sfc_source, sources%lay_source, sources%lev_source, &
-                sources%sfc_source_Jac)
-    !$acc end        data
+    allocate(m_fmajor(2, 2, 2, ncol,nlay,nflav))
+    allocate(m_jeta(2, ncol,nlay,nflav))
+    allocate(m_pfracin(ntemp,neta,npres+1,ngpt))
+    allocate(m_totplnk(nPlanckTemp,nbnd))
+
+    read(file_units(2)) m_sfc_lay
+    read(file_units(3)) m_jeta
+    read(file_units(4)) m_tropo
+    read(file_units(5)) m_jtemp
+    read(file_units(6)) m_jpress
+    read(file_units(7)) m_gpoint_bands
+    read(file_units(8)) m_band_lims_gpt
+    read(file_units(9)) m_gpoint_flavor
+    read(file_units(10)) m_tlay
+    read(file_units(11)) m_tlev
+    read(file_units(12)) m_tsfc
+    read(file_units(13)) m_fmajor
+    read(file_units(14)) m_pfracin
+    read(file_units(15)) m_temp_ref_min
+    read(file_units(16)) m_totplnk_delta
+    read(file_units(17)) m_totplnk
+
+    ! Close files
+    do i = 1, 17
+      close(file_units(i))
+    end do
+
+    ! print *, m_pfracin
+
+    ! Call compute function
+    call compute_Planck_source(ncol, nlay, nbnd, ngpt, nflav, neta, npres, ntemp, nPlanckTemp, &
+                m_tlay, m_tlev, m_tsfc, m_sfc_lay, &
+                m_fmajor, m_jeta, m_tropo, m_jtemp, m_jpress, &
+                m_gpoint_bands, m_band_lims_gpt, &
+                m_pfracin, m_temp_ref_min, m_totplnk_delta, m_totplnk, m_gpoint_flavor, &
+                sources%sfc_source, sources%lay_source, sources%lev_source, sources%sfc_source_Jac)
+
+    !$acc end data
     !$omp end target data
+
   end function source
+
   !--------------------------------------------------------------------------------------------------------------------
   !
   ! Initialization

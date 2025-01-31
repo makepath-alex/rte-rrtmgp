@@ -268,6 +268,102 @@ contains
     integer, dimension(ncol,2) :: itropo_lower, itropo_upper
     ! ----------------------------------------------------------------
 
+    ! integer :: file_dims
+    ! integer :: file_nminors
+    ! integer :: file_idx_h2o
+    ! integer :: file_gpoint_flavor
+    ! integer :: file_band_lims_gpt
+    ! integer :: file_kmajor
+    ! integer :: file_kminor_lower
+    ! integer :: file_kminor_upper
+    ! integer :: file_minor_limits_gpt_lower
+    ! integer :: file_minor_limits_gpt_upper
+    ! integer :: file_minor_scales_with_density_lower
+    ! integer :: file_minor_scales_with_density_upper
+    ! integer :: file_scale_by_complement_lower
+    ! integer :: file_scale_by_complement_upper
+    ! integer :: file_idx_minor_lower
+    ! integer :: file_idx_minor_upper
+    ! integer :: file_idx_minor_scaling_lower
+    ! integer :: file_idx_minor_scaling_upper
+    ! integer :: file_kminor_start_lower
+    ! integer :: file_kminor_start_upper
+    ! integer :: file_tropo
+    ! integer :: file_col_mix
+    ! integer :: file_fmajor
+    ! integer :: file_fminor
+    ! integer :: file_play
+    ! integer :: file_tlay
+    ! integer :: file_col_gas
+    ! integer :: file_jeta
+    ! integer :: file_jtemp
+    ! integer :: file_jpress
+    ! integer :: file_tau
+
+    ! open(newunit=file_dims, file="inputs-dims.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_nminors, file="inputs-nminors.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_idx_h2o, file="inputs-idx_h2o.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_gpoint_flavor, file="inputs-gpoint_flavor.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_band_lims_gpt, file="inputs-band_lims_gpt.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_kmajor, file="inputs-kmajor.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_kminor_lower, file="inputs-kminor_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_kminor_upper, file="inputs-kminor_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_minor_limits_gpt_lower, file="inputs-minor_limits_gpt_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_minor_limits_gpt_upper, file="inputs-minor_limits_gpt_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_minor_scales_with_density_lower, file="inputs-minor_scales_with_density_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_minor_scales_with_density_upper, file="inputs-minor_scales_with_density_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_scale_by_complement_lower, file="inputs-scale_by_complement_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_scale_by_complement_upper, file="inputs-scale_by_complement_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_idx_minor_lower, file="inputs-idx_minor_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_idx_minor_upper, file="inputs-idx_minor_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_idx_minor_scaling_lower, file="inputs-idx_minor_scaling_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_idx_minor_scaling_upper, file="inputs-idx_minor_scaling_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_kminor_start_lower, file="inputs-kminor_start_lower.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_kminor_start_upper, file="inputs-kminor_start_upper.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_tropo, file="inputs-tropo.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_col_mix, file="inputs-col_mix.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_fmajor, file="inputs-fmajor.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_fminor, file="inputs-fminor.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_play, file="inputs-play.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_tlay, file="inputs-tlay.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_col_gas, file="inputs-col_gas.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_jeta, file="inputs-jeta.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_jtemp, file="inputs-jtemp.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_jpress, file="inputs-jpress.bin", form="unformatted", access="stream", action="readwrite")
+    ! open(newunit=file_tau, file="inputs-tau.bin", form="unformatted", access="stream", action="readwrite")
+
+    ! ! Write all arrays
+    ! write(file_dims) ncol, nlay, nbnd, ngpt, ngas, nflav, neta, npres, ntemp
+    ! write(file_nminors) nminorlower, nminorklower, nminorupper, nminorkupper
+    ! write(file_idx_h2o) idx_h2o
+    ! write(file_gpoint_flavor) gpoint_flavor
+    ! write(file_band_lims_gpt) band_lims_gpt
+    ! write(file_kmajor) kmajor
+    ! write(file_kminor_lower) kminor_lower
+    ! write(file_kminor_upper) kminor_upper
+    ! write(file_minor_limits_gpt_lower) minor_limits_gpt_lower
+    ! write(file_minor_limits_gpt_upper) minor_limits_gpt_upper
+    ! write(file_minor_scales_with_density_lower) minor_scales_with_density_lower
+    ! write(file_minor_scales_with_density_upper) minor_scales_with_density_upper
+    ! write(file_scale_by_complement_lower) scale_by_complement_lower
+    ! write(file_scale_by_complement_upper) scale_by_complement_upper
+    ! write(file_idx_minor_lower) idx_minor_lower
+    ! write(file_idx_minor_upper) idx_minor_upper
+    ! write(file_idx_minor_scaling_lower) idx_minor_scaling_lower
+    ! write(file_idx_minor_scaling_upper) idx_minor_scaling_upper
+    ! write(file_kminor_start_lower) kminor_start_lower
+    ! write(file_kminor_start_upper) kminor_start_upper
+    ! write(file_tropo) tropo
+    ! write(file_col_mix) col_mix
+    ! write(file_fmajor) fmajor
+    ! write(file_fminor) fminor
+    ! write(file_play) play
+    ! write(file_tlay) tlay
+    ! write(file_col_gas) col_gas
+    ! write(file_jeta) jeta
+    ! write(file_jtemp) jtemp
+    ! write(file_jpress) jpress
+
     ! ---------------------
     ! Layer limits of upper, lower atmospheres
     ! ---------------------
@@ -335,6 +431,48 @@ contains
            col_gas,fminor,jeta,        &
            itropo_upper,jtemp,         &
            tau)
+
+    ! Open binary file for writing
+
+    ! write(file_tau) tau
+
+    ! ! Close the file
+    ! close(file_dims)
+    ! close(file_nminors)
+    ! close(file_idx_h2o)
+    ! close(file_gpoint_flavor)
+    ! close(file_band_lims_gpt)
+    ! close(file_kmajor)
+    ! close(file_kminor_lower)
+    ! close(file_kminor_upper)
+    ! close(file_minor_limits_gpt_lower)
+    ! close(file_minor_limits_gpt_upper)
+    ! close(file_minor_scales_with_density_lower)
+    ! close(file_minor_scales_with_density_upper)
+    ! close(file_scale_by_complement_lower)
+    ! close(file_scale_by_complement_upper)
+    ! close(file_idx_minor_lower)
+    ! close(file_idx_minor_upper)
+    ! close(file_idx_minor_scaling_lower)
+    ! close(file_idx_minor_scaling_upper)
+    ! close(file_kminor_start_lower)
+    ! close(file_kminor_start_upper)
+    ! close(file_tropo)
+    ! close(file_col_mix)
+    ! close(file_fmajor)
+    ! close(file_fminor)
+    ! close(file_play)
+    ! close(file_tlay)
+    ! close(file_col_gas)
+    ! close(file_jeta)
+    ! close(file_jtemp)
+    ! close(file_jpress)
+    ! close(file_tau)
+
+    ! print *, "band_lims_gpt:", band_lims_gpt
+
+    ! stop 0
+
   end subroutine compute_tau_absorption
   ! --------------------------------------------------------------------------------------
 
@@ -611,6 +749,74 @@ contains
     real(wp) :: planck_function(ncol,nlay+1,nbnd)
     ! -----------------
 
+    integer :: file_dim
+    integer :: file_sfc_lay
+    integer :: file_jeta
+    integer :: file_tropo
+    integer :: file_jtemp
+    integer :: file_jpress
+    integer :: file_gpoint_bands
+    integer :: file_band_lims_gpt
+    integer :: file_gpoint_flavor
+    integer :: file_tlay
+    integer :: file_tlev
+    integer :: file_tsfc
+    integer :: file_fmajor
+    integer :: file_pfracin
+    integer :: file_temp_ref_min
+    integer :: file_totplnk_delta
+    integer :: file_totplnk
+    integer :: file_sfc_src
+    integer :: file_lay_src
+    integer :: file_lev_src
+    integer :: file_sfc_source_Jac
+
+    character(len=*), parameter :: path = ""!"/data/vkm/code/makepath/rte-rrtmgp/tmp/"
+
+!    call execute_command_line("echo 'Error occurred'; backtrace")
+
+    ! Open binary file for writing
+    open(newunit=file_dim,            file=path // "inputs-dim.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_sfc_lay,        file=path // "inputs-sfc_lay.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_jeta,           file=path // "inputs-jeta.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_tropo,          file=path // "inputs-tropo.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_jtemp,          file=path // "inputs-jtemp.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_jpress,         file=path // "inputs-jpress.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_gpoint_bands,   file=path // "inputs-gpoint_bands.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_band_lims_gpt,  file=path // "inputs-band_lims_gpt.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_gpoint_flavor,  file=path // "inputs-gpoint_flavor.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_tlay,           file=path // "inputs-tlay.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_tlev,           file=path // "inputs-tlev.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_tsfc,           file=path // "inputs-tsfc.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_fmajor,         file=path // "inputs-fmajor.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_pfracin,        file=path // "inputs-pfracin.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_temp_ref_min,   file=path // "inputs-temp_ref_min.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_totplnk_delta,  file=path // "inputs-totplnk_delta.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_totplnk,        file=path // "inputs-totplnk.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_sfc_src,        file="inputs-sfc_src.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_lay_src,        file="inputs-lay_src.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_lev_src,        file="inputs-lev_src.bin", form="unformatted", access="stream", action="readwrite")
+    open(newunit=file_sfc_source_Jac, file="inputs-sfc_source_Jac.bin", form="unformatted", access="stream", action="readwrite")
+
+    ! Write all arrays
+    write(file_dim) ncol, nlay, nbnd, ngpt, nflav, neta, npres, ntemp, nPlanckTemp
+    write(file_sfc_lay) sfc_lay
+    write(file_jeta) jeta
+    write(file_tropo) tropo
+    write(file_jtemp) jtemp
+    write(file_jpress) jpress
+    write(file_gpoint_bands) gpoint_bands
+    write(file_band_lims_gpt) band_lims_gpt
+    write(file_gpoint_flavor) gpoint_flavor
+    write(file_tlay) tlay
+    write(file_tlev) tlev
+    write(file_tsfc) tsfc
+    write(file_fmajor) fmajor
+    write(file_pfracin) pfracin
+    write(file_temp_ref_min) temp_ref_min
+    write(file_totplnk_delta) totplnk_delta
+    write(file_totplnk) totplnk
+
     ! Calculation of fraction of band's Planck irradiance associated with each g-point
     do ibnd = 1, nbnd
       gptS = band_lims_gpt(1, ibnd)
@@ -704,6 +910,38 @@ contains
         end do
       end do
     end do
+
+    write(file_sfc_src) sfc_src
+    write(file_lay_src) lay_src
+    write(file_lev_src) lev_src
+    write(file_sfc_source_Jac) sfc_source_Jac
+
+    ! Close the file
+    close(file_dim)
+    close(file_sfc_lay)
+    close(file_jeta)
+    close(file_tropo)
+    close(file_jtemp)
+    close(file_jpress)
+    close(file_gpoint_bands)
+    close(file_band_lims_gpt)
+    close(file_gpoint_flavor)
+    close(file_tlay)
+    close(file_tlev)
+    close(file_tsfc)
+    close(file_fmajor)
+    close(file_pfracin)
+    close(file_temp_ref_min)
+    close(file_totplnk_delta)
+    close(file_totplnk)
+    close(file_sfc_src)
+    close(file_lay_src)
+    close(file_lev_src)
+    close(file_sfc_source_Jac)
+
+    print *, "here!!!!!!!!!!!!!!!!!!!!!"
+
+    stop 0
 
   end subroutine compute_Planck_source
   ! ----------------------------------------------------------
