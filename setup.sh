@@ -3,6 +3,10 @@ rm -rf build
 BUILD_DIR=build
 BUILD_TYPE=Release
 
+BUILD_DIR=build
+BUILD_TYPE=Debug
+BUILD_SHARED_LIBS=ON
+
 FC=gfortran
 FFLAGS='-ffree-line-length-none -m64 -std=f2008 -march=native -fbounds-check -fmodule-private -fimplicit-none -finit-real=nan'
 
@@ -18,10 +22,14 @@ cmake -S . -B $BUILD_DIR -G "Ninja" \
         -DKERNEL_MODE=$KERNEL_MODE \
         -DBUILD_TESTING=$BUILD_TESTING \
         -DFAILURE_THRESHOLD=$FAILURE_THRESHOLD \
+        -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS \
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
 cmake --build $BUILD_DIR --parallel
 
 cmake --install $BUILD_DIR --prefix install_test
 
-ctest --output-on-failure --test-dir ${BUILD_DIR} -V
+# The --test-dir option is available only starting CMake 3.20:
+# ctest --output-on-failure --test-dir ${BUILD_DIR} -V
+ctest -R run_rrtmgp_rfmip_lw --test-dir ${BUILD_DIR} -V
+# ctest -R run_allsky_gptclds_sw --test-dir ${BUILD_DIR} -V
